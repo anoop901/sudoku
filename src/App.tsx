@@ -39,6 +39,15 @@ export default function App() {
           Solve Step
         </button>
       </div>
+      <div>
+        <button
+          onClick={() => {
+            setSudoku(sudoku.solve());
+          }}
+        >
+          Solve Full
+        </button>
+      </div>
     </>
   );
 }

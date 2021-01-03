@@ -44,6 +44,32 @@ export default class Sudoku {
     return new Sudoku(newValues);
   }
 
+  equals(other: Sudoku): boolean {
+    return this.values.equals(other.values);
+  }
+
+  get complete(): boolean {
+    for (const rowValues of this.values) {
+      for (const value of rowValues) {
+        if (value === null) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  solve(): Sudoku {
+    let previousStep: Sudoku = this;
+    do {
+      const currentStep = previousStep.solveStep();
+      if (currentStep.complete || currentStep.equals(previousStep)) {
+        return currentStep;
+      }
+      previousStep = currentStep;
+    } while (true);
+  }
+
   possibleValuesAtLocation(location: SudokuLocation): Set<number> {
     return Set(Array.from({ length: 9 }, (_, i) => i + 1)).subtract(
       location.adjacentLocations.flatMap((adjacentLocation) => {
