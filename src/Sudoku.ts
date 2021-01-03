@@ -1,4 +1,4 @@
-import { List } from "immutable";
+import { List, Set } from "immutable";
 
 export default class Sudoku {
   constructor(public readonly values: List<List<number | null>>) {
@@ -12,5 +12,13 @@ export default class Sudoku {
         );
       }
     }
+  }
+
+  get possibilities(): List<List<Set<number>>> {
+    throw new Error("not implemented");
+  }
+
+  solve(): Sudoku {
+    throw new Error("not implemented");
   }
 }
