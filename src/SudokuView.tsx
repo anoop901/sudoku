@@ -28,50 +28,56 @@ export default function SudokuView(props: { sudoku: Sudoku }) {
   );
   return (
     <table>
-      {Array.from({ length: 3 }, (_, boxRow) => (
-        <tr>
-          {Array.from({ length: 3 }, (_, boxCol) => (
-            <td>
-              <table>
-                {Array.from({ length: 3 }, (_, rowInBox) => (
-                  <tr>
-                    {Array.from({ length: 3 }, (_, colInBox) => {
-                      const row = boxRow * 3 + rowInBox;
-                      const col = boxCol * 3 + colInBox;
-                      const location = new SudokuLocation({ row, col });
-                      const isSelectedCell = selectedLocation.equals(location);
-                      const isAdjacentToSelectedCell = selectedLocation.adjacentLocations.has(
-                        location
-                      );
-                      const value = props.sudoku.valueAtLocation(location);
-                      return (
-                        <td
-                          style={{
-                            ...tableCellStyle,
-                            ...(isSelectedCell ? selectedCellStyle : {}),
-                            ...(isAdjacentToSelectedCell
-                              ? adjacentCellStyle
-                              : {}),
-                            ...(value === null ? possibleValuesStyle : {}),
-                          }}
-                          onClick={() => {
-                            setSelectedLocation(location);
-                          }}
-                        >
-                          {value ??
-                            props.sudoku
-                              .possibleValuesAtLocation(location)
-                              .join(" ")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </table>
-            </td>
-          ))}
-        </tr>
-      ))}
+      <tbody>
+        {Array.from({ length: 3 }, (_, boxRow) => (
+          <tr>
+            {Array.from({ length: 3 }, (_, boxCol) => (
+              <td>
+                <table>
+                  <tbody>
+                    {Array.from({ length: 3 }, (_, rowInBox) => (
+                      <tr>
+                        {Array.from({ length: 3 }, (_, colInBox) => {
+                          const row = boxRow * 3 + rowInBox;
+                          const col = boxCol * 3 + colInBox;
+                          const location = new SudokuLocation({ row, col });
+                          const isSelectedCell = selectedLocation.equals(
+                            location
+                          );
+                          const isAdjacentToSelectedCell = selectedLocation.adjacentLocations.has(
+                            location
+                          );
+                          const value = props.sudoku.valueAtLocation(location);
+                          return (
+                            <td
+                              style={{
+                                ...tableCellStyle,
+                                ...(isSelectedCell ? selectedCellStyle : {}),
+                                ...(isAdjacentToSelectedCell
+                                  ? adjacentCellStyle
+                                  : {}),
+                                ...(value === null ? possibleValuesStyle : {}),
+                              }}
+                              onClick={() => {
+                                setSelectedLocation(location);
+                              }}
+                            >
+                              {value ??
+                                props.sudoku
+                                  .possibleValuesAtLocation(location)
+                                  .join(" ")}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
     </table>
   );
 }
