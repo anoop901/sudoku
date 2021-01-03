@@ -1,4 +1,5 @@
 import { Record, Set } from "immutable";
+import Sudoku from "./Sudoku";
 
 export default class SudokuLocation extends Record({
   row: 0,
@@ -40,5 +41,14 @@ export default class SudokuLocation extends Record({
     return this.locationsInSameRow
       .union(this.locationsInSameCol)
       .union(this.locationsInSameBox);
+  }
+
+  get next(): SudokuLocation {
+    if (this.col < 8) {
+      return new SudokuLocation({ row: this.row, col: this.col + 1 });
+    } else if (this.row < 8) {
+      return new SudokuLocation({ row: this.row + 1, col: 0 });
+    }
+    return this;
   }
 }
