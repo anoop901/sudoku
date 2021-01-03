@@ -16,7 +16,6 @@ const tableCellStyle = {
   width: "30px",
   height: "30px",
   textAlign: "center" as const,
-  overflow: "visible" as const,
 };
 
 const adjacentCellStyle = {
@@ -30,6 +29,7 @@ const selectedCellStyle = {
 const possibleValuesStyle = {
   fontSize: "0.7em",
   color: "#888",
+  lineHeight: "90%",
 };
 
 export default function SudokuView({
