@@ -59,6 +59,55 @@ export default function SudokuView({
     return () => document.removeEventListener("keypress", handler);
   }, [sudoku, selectedLocation, setSudoku]);
 
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "ArrowUp":
+          if (selectedLocation.row > 0) {
+            setSelectedLocation(
+              new SudokuLocation({
+                row: selectedLocation.row - 1,
+                col: selectedLocation.col,
+              })
+            );
+          }
+          break;
+        case "ArrowDown":
+          if (selectedLocation.row < 8) {
+            setSelectedLocation(
+              new SudokuLocation({
+                row: selectedLocation.row + 1,
+                col: selectedLocation.col,
+              })
+            );
+          }
+          break;
+        case "ArrowLeft":
+          if (selectedLocation.col > 0) {
+            setSelectedLocation(
+              new SudokuLocation({
+                row: selectedLocation.row,
+                col: selectedLocation.col - 1,
+              })
+            );
+          }
+          break;
+        case "ArrowRight":
+          if (selectedLocation.col < 8) {
+            setSelectedLocation(
+              new SudokuLocation({
+                row: selectedLocation.row,
+                col: selectedLocation.col + 1,
+              })
+            );
+          }
+          break;
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [selectedLocation]);
+
   return (
     <table style={tableStyle}>
       <tbody>
