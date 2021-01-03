@@ -19,8 +19,29 @@ export default class Sudoku {
     return this.values.get(location.row)?.get(location.col) ?? null;
   }
 
-  solve(): Sudoku {
-    throw new Error("not implemented");
+  solveStep(): Sudoku {
+    const newValues = List(
+      Array.from({ length: 9 }, (_, row) =>
+        List(
+          Array.from({ length: 9 }, (_, col) => {
+            const location = new SudokuLocation({ row, col });
+            const value = this.valueAtLocation(location);
+            if (value !== null) {
+              return value;
+            }
+            const possibilities = this.possibleValuesAtLocation(location);
+            if (possibilities.size === 0) {
+              throw new Error("failed to solve Sudoku: no solution exists");
+            }
+            if (possibilities.size === 1) {
+              return possibilities.toArray()[0];
+            }
+            return null;
+          })
+        )
+      )
+    );
+    return new Sudoku(newValues);
   }
 
   possibleValuesAtLocation(location: SudokuLocation): Set<number> {
