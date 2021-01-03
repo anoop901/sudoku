@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sudoku from "./Sudoku";
 import SudokuLocation from "./SudokuLocation";
 
@@ -7,6 +7,7 @@ const tableCellStyle = {
   width: "30px",
   height: "30px",
   textAlign: "center" as const,
+  overflow: "visible" as const,
 };
 
 const adjacentCellStyle = {
@@ -22,10 +23,31 @@ const possibleValuesStyle = {
   color: "#888",
 };
 
-export default function SudokuView(props: { sudoku: Sudoku }) {
+export default function SudokuView({
+  sudoku,
+  setSudoku,
+}: {
+  sudoku: Sudoku;
+  setSudoku: (sudoku: Sudoku) => void;
+}) {
   const [selectedLocation, setSelectedLocation] = useState(
     new SudokuLocation({ row: 0, col: 0 })
   );
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
+        const value = Number(event.key);
+        setSudoku(sudoku.setValueAtLocation(selectedLocation, value));
+      }
+      if (["0", " "].includes(event.key)) {
+        setSudoku(sudoku.clearValueAtLocation(selectedLocation));
+      }
+    };
+    document.addEventListener("keypress", handler);
+    return () => document.removeEventListener("keypress", handler);
+  }, [sudoku, selectedLocation, setSudoku]);
+
   return (
     <table>
       <tbody>
@@ -47,7 +69,7 @@ export default function SudokuView(props: { sudoku: Sudoku }) {
                           const isAdjacentToSelectedCell = selectedLocation.adjacentLocations.has(
                             location
                           );
-                          const value = props.sudoku.valueAtLocation(location);
+                          const value = sudoku.valueAtLocation(location);
                           return (
                             <td
                               key={colInBox}
@@ -64,7 +86,7 @@ export default function SudokuView(props: { sudoku: Sudoku }) {
                               }}
                             >
                               {value ??
-                                props.sudoku
+                                sudoku
                                   .possibleValuesAtLocation(location)
                                   .join(" ")}
                             </td>

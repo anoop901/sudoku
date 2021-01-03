@@ -29,7 +29,11 @@ export default function App() {
   );
   return (
     <>
-      <SudokuView sudoku={sudoku} />
+      <p>
+        To put a number in a cell, select the cell and type the number. To clear
+        a cell, type '0' or space.
+      </p>
+      <SudokuView sudoku={sudoku} setSudoku={setSudoku} />
       <div>
         <button
           onClick={() => {
@@ -46,6 +50,23 @@ export default function App() {
           }}
         >
           Solve Full
+        </button>
+      </div>
+      <div>
+        <button
+          onClick={() => {
+            setSudoku(
+              new Sudoku(
+                List(
+                  Array.from({ length: 9 }, () =>
+                    List(Array.from({ length: 9 }, () => null))
+                  )
+                )
+              )
+            );
+          }}
+        >
+          Clear
         </button>
       </div>
     </>

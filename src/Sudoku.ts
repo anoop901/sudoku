@@ -19,6 +19,14 @@ export default class Sudoku {
     return this.values.get(location.row)?.get(location.col) ?? null;
   }
 
+  setValueAtLocation(location: SudokuLocation, value: number): Sudoku {
+    return new Sudoku(this.values.setIn([location.row, location.col], value));
+  }
+
+  clearValueAtLocation(location: SudokuLocation): Sudoku {
+    return new Sudoku(this.values.setIn([location.row, location.col], null));
+  }
+
   solveStep(): Sudoku {
     const newValues = List(
       Array.from({ length: 9 }, (_, row) =>
