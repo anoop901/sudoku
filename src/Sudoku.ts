@@ -1,5 +1,5 @@
 import { List, Set } from "immutable";
-import SudokuLocation from "./SudokuLocation";
+import SudokuLocation, { getAllGroups } from "./SudokuLocation";
 
 export default class Sudoku {
   constructor(private readonly values: List<List<number | null>>) {
@@ -85,5 +85,21 @@ export default class Sudoku {
         return value !== null ? [value] : [];
       })
     );
+  }
+
+  get valid(): boolean {
+    for (const group of getAllGroups()) {
+      let valuesSeen = Set<number>();
+      for (const location of group) {
+        const value = this.valueAtLocation(location);
+        if (value !== null) {
+          if (valuesSeen.has(value)) {
+            return false;
+          }
+          valuesSeen = valuesSeen.add(value);
+        }
+      }
+    }
+    return true;
   }
 }

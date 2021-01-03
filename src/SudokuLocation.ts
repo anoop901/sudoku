@@ -1,5 +1,4 @@
 import { Record, Set } from "immutable";
-import Sudoku from "./Sudoku";
 
 export default class SudokuLocation extends Record({
   row: 0,
@@ -51,4 +50,53 @@ export default class SudokuLocation extends Record({
     }
     return this;
   }
+}
+
+function* getAllRows(): Generator<Set<SudokuLocation>, void, void> {
+  for (let row = 0; row < 9; row++) {
+    yield Set(
+      (function* () {
+        for (let col = 0; col < 9; col++) {
+          yield new SudokuLocation({ row, col });
+        }
+      })()
+    );
+  }
+}
+
+export function* getAllCols(): Generator<Set<SudokuLocation>, void, void> {
+  for (let col = 0; col < 9; col++) {
+    yield Set(
+      (function* () {
+        for (let row = 0; row < 9; row++) {
+          yield new SudokuLocation({ row, col });
+        }
+      })()
+    );
+  }
+}
+
+export function* getAllBoxes(): Generator<Set<SudokuLocation>, void, void> {
+  for (let boxRow = 0; boxRow < 3; boxRow++) {
+    for (let boxCol = 0; boxCol < 3; boxCol++) {
+      yield Set(
+        (function* () {
+          for (let rowInBox = 0; rowInBox < 3; rowInBox++) {
+            for (let colInBox = 0; colInBox < 3; colInBox++) {
+              yield new SudokuLocation({
+                row: boxRow * 3 + rowInBox,
+                col: boxCol * 3 + colInBox,
+              });
+            }
+          }
+        })()
+      );
+    }
+  }
+}
+
+export function* getAllGroups(): Generator<Set<SudokuLocation>, void, void> {
+  yield* getAllRows();
+  yield* getAllCols();
+  yield* getAllBoxes();
 }

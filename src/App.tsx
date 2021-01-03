@@ -34,6 +34,7 @@ export default function App() {
         a cell, type '0' or space.
       </p>
       <SudokuView sudoku={sudoku} setSudoku={setSudoku} />
+      <p>Sudoku is {sudoku.valid ? "valid" : "not valid"}.</p>
       <div>
         <button
           onClick={() => {
