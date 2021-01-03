@@ -38,20 +38,16 @@ export default function SudokuView({
     new SudokuLocation({ row: 0, col: 0 })
   );
 
-  function selectNextLocation() {
-    setSelectedLocation(selectedLocation.next);
-  }
-
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (["1", "2", "3", "4", "5", "6", "7", "8", "9"].includes(event.key)) {
         const value = Number(event.key);
         setSudoku(sudoku.setValueAtLocation(selectedLocation, value));
-        selectNextLocation();
+        setSelectedLocation(selectedLocation.next);
       }
       if (["0", " "].includes(event.key)) {
         setSudoku(sudoku.clearValueAtLocation(selectedLocation));
-        selectNextLocation();
+        setSelectedLocation(selectedLocation.next);
       }
     };
     document.addEventListener("keypress", handler);
