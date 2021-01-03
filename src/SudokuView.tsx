@@ -30,13 +30,13 @@ export default function SudokuView(props: { sudoku: Sudoku }) {
     <table>
       <tbody>
         {Array.from({ length: 3 }, (_, boxRow) => (
-          <tr>
+          <tr key={boxRow}>
             {Array.from({ length: 3 }, (_, boxCol) => (
-              <td>
+              <td key={boxCol}>
                 <table>
                   <tbody>
                     {Array.from({ length: 3 }, (_, rowInBox) => (
-                      <tr>
+                      <tr key={rowInBox}>
                         {Array.from({ length: 3 }, (_, colInBox) => {
                           const row = boxRow * 3 + rowInBox;
                           const col = boxCol * 3 + colInBox;
@@ -50,6 +50,7 @@ export default function SudokuView(props: { sudoku: Sudoku }) {
                           const value = props.sudoku.valueAtLocation(location);
                           return (
                             <td
+                              key={colInBox}
                               style={{
                                 ...tableCellStyle,
                                 ...(isSelectedCell ? selectedCellStyle : {}),
