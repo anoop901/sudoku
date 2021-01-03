@@ -4,6 +4,11 @@ import SudokuLocation from "./SudokuLocation";
 
 const tableStyle = {
   borderCollapse: "collapse" as const,
+  border: "1px solid black",
+};
+
+const boxStyle = {
+  padding: "0px",
 };
 
 const tableCellStyle = {
@@ -60,7 +65,7 @@ export default function SudokuView({
         {Array.from({ length: 3 }, (_, boxRow) => (
           <tr key={boxRow}>
             {Array.from({ length: 3 }, (_, boxCol) => (
-              <td key={boxCol}>
+              <td key={boxCol} style={boxStyle}>
                 <table style={tableStyle}>
                   <tbody>
                     {Array.from({ length: 3 }, (_, rowInBox) => (
