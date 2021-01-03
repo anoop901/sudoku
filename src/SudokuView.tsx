@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import Sudoku from "./Sudoku";
 import SudokuLocation from "./SudokuLocation";
 
+const tableStyle = {
+  borderCollapse: "collapse" as const,
+};
+
 const tableCellStyle = {
   border: "1px solid black",
   width: "30px",
@@ -55,13 +59,13 @@ export default function SudokuView({
   }, [sudoku, selectedLocation, setSudoku]);
 
   return (
-    <table>
+    <table style={tableStyle}>
       <tbody>
         {Array.from({ length: 3 }, (_, boxRow) => (
           <tr key={boxRow}>
             {Array.from({ length: 3 }, (_, boxCol) => (
               <td key={boxCol}>
-                <table>
+                <table style={tableStyle}>
                   <tbody>
                     {Array.from({ length: 3 }, (_, rowInBox) => (
                       <tr key={rowInBox}>
