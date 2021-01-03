@@ -19,10 +19,6 @@ export default class Sudoku {
     return this.values.get(location.row)?.get(location.col) ?? null;
   }
 
-  get possibilities(): List<List<Set<number>>> {
-    throw new Error("not implemented");
-  }
-
   solve(): Sudoku {
     throw new Error("not implemented");
   }
