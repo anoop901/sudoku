@@ -121,7 +121,7 @@ describe("possibleValuesAtLocation", () => {
 });
 
 describe("solve", () => {
-  test("basic", () => {
+  test("easy sudoku", () => {
     const _ = null;
     const sudoku = new Sudoku(
       List([
@@ -162,5 +162,28 @@ describe("solve", () => {
       ])
     );
     expect(sudoku.solve()).toEqual(solvedSudoku);
+  });
+  test("medium sudoku", () => {
+    const _ = null;
+    const sudoku = new Sudoku(
+      List([
+        ...[
+          List([...[_, 5, _], ...[4, _, 6], ...[_, _, _]]),
+          List([...[_, _, _], ...[2, _, _], ...[_, _, _]]),
+          List([...[_, 8, 4], ...[7, _, 3], ...[6, _, _]]),
+        ],
+        ...[
+          List([...[_, _, 2], ...[_, 3, 1], ...[4, 9, 8]]),
+          List([...[8, _, _], ...[_, _, _], ...[_, 2, 5]]),
+          List([...[5, 4, 9], ...[_, _, _], ...[_, _, _]]),
+        ],
+        ...[
+          List([...[7, 6, _], ...[1, _, _], ...[_, 4, 2]]),
+          List([...[_, _, 5], ...[_, 6, _], ...[_, _, _]]),
+          List([...[9, _, _], ...[_, _, _], ...[_, 5, _]]),
+        ],
+      ])
+    );
+    sudoku.solve();
   });
 });
