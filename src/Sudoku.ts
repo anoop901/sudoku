@@ -1,5 +1,8 @@
 import { List, Set } from "immutable";
-import SudokuLocation, { getAllGroups } from "./SudokuLocation";
+import SudokuLocation, {
+  getAllGroups,
+  getAllLocations,
+} from "./SudokuLocation";
 
 export default class Sudoku {
   constructor(private readonly values: List<List<number | null>>) {
@@ -28,28 +31,22 @@ export default class Sudoku {
   }
 
   fillInLocationsWithOnePossibility(): Sudoku {
-    const newValues = List(
-      Array.from({ length: 9 }, (_, row) =>
-        List(
-          Array.from({ length: 9 }, (_, col) => {
-            const location = new SudokuLocation({ row, col });
-            const value = this.valueAtLocation(location);
-            if (value !== null) {
-              return value;
-            }
-            const possibilities = this.possibleValuesAtLocation(location);
-            if (possibilities.size === 0) {
-              throw new Error("failed to solve Sudoku: no solution exists");
-            }
-            if (possibilities.size === 1) {
-              return possibilities.toArray()[0];
-            }
-            return null;
-          })
-        )
-      )
-    );
-    return new Sudoku(newValues);
+    let newSudoku: Sudoku = this;
+    for (const location of getAllLocations()) {
+      const value = this.valueAtLocation(location);
+      if (value !== null) {
+        continue;
+      }
+      const possibilities = this.possibleValuesAtLocation(location);
+      if (possibilities.size === 0) {
+        throw new Error("failed to solve Sudoku: no solution exists");
+      }
+      if (possibilities.size === 1) {
+        const newValue = possibilities.toArray()[0];
+        newSudoku = newSudoku.setValueAtLocation(location, newValue);
+      }
+    }
+    return newSudoku;
   }
 
   equals(other: Sudoku): boolean {
