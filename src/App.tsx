@@ -38,7 +38,10 @@ export default function App() {
       <div>
         <button
           onClick={() => {
-            setSudoku(sudoku.solveStep());
+            const solvedSudoku = sudoku.fillInLocationsWithOnePossibility();
+            if (solvedSudoku !== null) {
+              setSudoku(solvedSudoku);
+            }
           }}
         >
           Solve Step
@@ -47,7 +50,10 @@ export default function App() {
       <div>
         <button
           onClick={() => {
-            setSudoku(sudoku.solve());
+            const solvedSudoku = sudoku.solve();
+            if (solvedSudoku !== null) {
+              setSudoku(solvedSudoku);
+            }
           }}
         >
           Solve Full

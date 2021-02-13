@@ -27,7 +27,7 @@ export default class Sudoku {
     return new Sudoku(this.values.setIn([location.row, location.col], null));
   }
 
-  solveStep(): Sudoku {
+  fillInLocationsWithOnePossibility(): Sudoku {
     const newValues = List(
       Array.from({ length: 9 }, (_, row) =>
         List(
@@ -68,14 +68,17 @@ export default class Sudoku {
   }
 
   solve(): Sudoku {
-    let previousStep: Sudoku = this;
-    do {
-      const currentStep = previousStep.solveStep();
-      if (currentStep.complete || currentStep.equals(previousStep)) {
+    let currentStep: Sudoku = this;
+    while (true) {
+      if (currentStep.complete) {
         return currentStep;
       }
-      previousStep = currentStep;
-    } while (true);
+      const nextStep = currentStep.fillInLocationsWithOnePossibility();
+      if (nextStep.equals(currentStep)) {
+        return currentStep;
+      }
+      currentStep = nextStep;
+    }
   }
 
   possibleValuesAtLocation(location: SudokuLocation): Set<number> {
