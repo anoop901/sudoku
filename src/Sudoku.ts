@@ -1,3 +1,9 @@
+import chain from "@anoop901/js-util/chain";
+import allIntegersStartingAt from "@anoop901/js-util/iterables/allIntegersStartingAt";
+import take from "@anoop901/js-util/iterables/take";
+import anyMatch from "@anoop901/js-util/iterables/anyMatch";
+import map from "@anoop901/js-util/iterables/map";
+import fold from "@anoop901/js-util/iterables/fold";
 import { List, Set } from "immutable";
 import SudokuLocation, {
   getAllGroups,
@@ -79,12 +85,26 @@ export default class Sudoku {
   }
 
   possibleValuesAtLocation(location: SudokuLocation): Set<number> {
-    return Set(Array.from({ length: 9 }, (_, i) => i + 1)).subtract(
-      location.adjacentLocations.flatMap((adjacentLocation) => {
-        const value = this.valueAtLocation(adjacentLocation);
-        return value !== null ? [value] : [];
-      })
-    );
+    return chain(location.adjacentLocations)
+      .then(map((location) => this.valueAtLocation(location)))
+      .then(
+        fold(
+          Set(chain(allIntegersStartingAt(1)).then(take(9)).end()),
+          (possibleValues, adjacentValue) =>
+            adjacentValue == null
+              ? possibleValues
+              : possibleValues.remove(adjacentValue)
+        )
+      )
+      .end();
+  }
+
+  isValuePossibleAtLocation(value: number, location: SudokuLocation): boolean {
+    return chain(location.adjacentLocations)
+      .then(map((location) => this.valueAtLocation(location)))
+      .then(anyMatch((adjacentValue) => adjacentValue === value))
+      .then((x) => !x)
+      .end();
   }
 
   get valid(): boolean {
