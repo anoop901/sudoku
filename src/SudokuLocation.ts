@@ -100,3 +100,11 @@ export function* getAllGroups(): Generator<Set<SudokuLocation>, void, void> {
   yield* getAllCols();
   yield* getAllBoxes();
 }
+
+export function* getAllLocations(): Generator<SudokuLocation, void, void> {
+  for (let row = 0; row < 9; row++) {
+    for (let col = 0; col < 9; col++) {
+      yield new SudokuLocation({ row, col });
+    }
+  }
+}
